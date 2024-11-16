@@ -1,0 +1,2180 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    
+        <link rel="stylesheet" href="styles.css">
+        <style>
+        html, body {
+                background-color: #ffffff;
+            }
+            .ol-control > * {
+                background-color: #f8f8f8!important;
+                color: #444444!important;
+                border-radius: 0px;
+            }
+            .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
+                color: #444444!important;
+            }
+            .search-layer-input-search {
+                background-color: #f8f8f8!important;
+            }
+            .ol-control > *:focus, .ol-control >*:hover {
+                background-color: rgba(248, 248, 248, 0.7)!important;
+            } 
+            .ol-control {
+                background-color: rgba(255,255,255,.4) !important;
+                padding: 2px !important;
+            } 
+            </style>
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Peta Interaktif Desa Kejawar</title>
+        <!-- Custom Styling -->
+        <style>
+            /* Navbar */
+                body {
+                    padding: 0;
+                    margin: 0;
+                    box-sizing: border-box;
+                    font-family: 'Arial', sans-serif;
+                    scroll-behavior: smooth;
+                    scroll-padding-top: 3rem;
+                    background-color: #f4f4f4; /* Light background color */
+                    color: #333; /* Dark text color for readability */
+                }
+        
+                /* Header Styles */
+                header {
+                    position: fixed;
+                    height: 60px;
+                    padding: 0 3rem;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    z-index: 9999;
+                    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker background for a more modern look */
+                    backdrop-filter: blur(10px);
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                    border-radius: 10px;
+                    transition: background-color 0.3s ease;
+                }
+        
+                .logo {
+                    font-size: 28px;
+                    font-weight: bold;
+                    color: #ffffff; /* White color for the logo */
+                    letter-spacing: 1px; /* Slight space between letters */
+                    text-transform: uppercase;
+                }
+        
+                .logo span {
+                    color: #0dfa60; /* Add a touch of color for emphasis */
+                }
+        
+                /* Hamburger Menu Styles */
+                .hamburger {
+                    display: none; /* Hidden by default */
+                    cursor: pointer;
+                    z-index: 10001; /* Ensure hamburger is clickable above the content */
+                }
+        
+                .hamburger .line {
+                    width: 30px;
+                    height: 4px;
+                    background-color: #fff; /* White lines for contrast */
+                    margin: 5px 0;
+                    transition: transform 0.3s ease, opacity 0.3s ease;
+                }
+        
+                .hamburger .line.change:nth-child(1) {
+                    transform: rotate(45deg) translateY(9px);
+                }
+        
+                .hamburger .line.change:nth-child(2) {
+                    opacity: 0;
+                }
+        
+                .hamburger .line.change:nth-child(3) {
+                    transform: rotate(-45deg) translateY(-9px);
+                }
+        
+                /* Nav Styles */
+                .nav-bar {
+                    display: flex;
+                    align-items: center;
+                }
+        
+                .nav-bar ul {
+                    list-style: none;
+                    display: flex;
+                    margin: 0;
+                }
+        
+                .nav-bar li {
+                    margin-left: 20px;
+                }
+        
+                .nav-bar a {
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    font-size: 16px;
+                    letter-spacing: 1px;
+                    transition: color 0.3s ease, transform 0.3s ease;
+                }
+        
+                .nav-bar a:hover {
+                    color: #0dfa60; /* Hover effect with accent color */
+                    transform: scale(1.1);
+                }
+        
+                /* Media Query for Mobile */
+                @media (max-width: 768px) {
+                    .hamburger {
+                        display: block; /* Show hamburger menu on mobile */
+                    }
+        
+                    .nav-bar {
+                        display: none; /* Hide nav on mobile */
+                        position: absolute;
+                        top: 60px;
+                        right: 0;
+                        background-color: rgba(0, 0, 0, 0.9); /* Darker background for mobile */
+                        width: 250px;
+                        padding: 10px;
+                        border-radius: 8px;
+                        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+                        transition: transform 0.3s ease-in-out;
+                        transform: translateX(100%);
+                    }
+        
+                    .nav-bar.active {
+                        display: flex;
+                        transform: translateX(0); /* Slide in the nav */
+                    }
+        
+                    .nav-bar ul {
+                        flex-direction: column;
+                        padding: 0;
+                        margin: 0;
+                    }
+        
+                    .nav-bar li {
+                        margin: 15px 0;
+                    }
+                }
+
+
+            /* Hero Section */
+            .hero {
+                background: url('images/bg.jpg') no-repeat center center/cover;
+                color: #fff;
+                text-align: center;
+                padding: 5rem 2rem;
+                background-size: cover;
+                background-position: center center;
+                min-height: 100vh; /* Ganti height dengan min-height */
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            }
+
+            .hero h1 {
+                font-size: 3.5rem;
+                margin-bottom: 1.5rem;
+                font-weight: bold;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+            }
+
+            .hero p {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+                line-height: 1.6;
+                max-width: 700px;
+                text-align: center;
+                font-style: italic;
+            }
+
+            .cta-button {
+                display: inline-block;
+                padding: 0.8rem 2rem;
+                background-color: #333;
+                color: #fff;
+                text-decoration: none;
+                font-weight: bold;
+                border-radius: 50px;
+                font-size: 1.2rem;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .cta-button:hover {
+                background-color: #555;
+                transform: translateY(-3px);
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .cta-button:active {
+                transform: translateY(1px);
+            }
+
+
+
+            /* Gaya untuk Visi dan Misi */
+            #visi-misi {
+                background: linear-gradient(135deg, #f0f4f8, #ffffff); /* Gradasi warna lembut */
+                padding: 40px 50px; /* Padding kiri dan kanan lebih besar untuk desktop */
+                width: 100%;
+                height: auto; /* Membuat tinggi konten dinamis mengikuti isi */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                box-sizing: border-box;
+                overflow: auto;
+            }
+
+            /* Container teks Visi dan Misi */
+            .visi-misi-text {
+                text-align: center;
+                width: 100%;
+                max-width: 1300px; /* Lebar maksimum lebih besar untuk desktop */
+                padding: 40px;
+                box-sizing: border-box;
+                background-color: #fff;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                margin: 30px auto; /* Memberikan jarak atas dan bawah lebih besar */
+            }
+
+            /* Gaya untuk Judul Visi dan Misi */
+            .visi-misi-text h2 {
+                font-size: 2.5rem;
+                color: #333;
+                margin-bottom: 20px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            /* Gaya untuk Isi Visi */
+            .visi {
+                font-size: 1.3rem;
+                line-height: 1.8;
+                color: #555;
+                margin-bottom: 20px;
+            }
+
+            /* Gaya untuk Isi Misi */
+            .misi {
+                font-size: 1.3rem;
+                line-height: 1.8;
+                color: #555;
+            }
+
+            /* Responsif untuk ukuran layar kecil (ponsel) */
+            @media (max-width: 480px) {
+                #visi-misi {
+                    padding: 15px; /* Padding lebih kecil pada layar kecil */
+                }
+
+                .visi-misi-text {
+                    padding: 20px;
+                    width: 100%;
+                    max-width: 100%; /* Pastikan tidak melebihi lebar layar */
+                    margin: 10px auto;
+                }
+
+                .visi-misi-text h2 {
+                    font-size: 1.8rem; /* Ukuran judul lebih kecil pada ponsel */
+                }
+
+                .visi-misi-text .visi,
+                .visi-misi-text .misi {
+                    font-size: 1rem; /* Ukuran teks lebih kecil pada ponsel */
+                }
+            }
+
+            /* Responsif untuk ukuran layar medium (tablet dan desktop kecil) */
+            @media (max-width: 768px) {
+                #visi-misi {
+                    padding: 25px; /* Padding lebih besar pada tablet */
+                }
+
+                .visi-misi-text {
+                    max-width: 90%; /* Menyesuaikan lebar container untuk tablet */
+                }
+
+                .visi-misi-text h2 {
+                    font-size: 2rem; /* Ukuran judul sedikit lebih kecil pada tablet */
+                }
+
+                .visi-misi-text .visi,
+                .visi-misi-text .misi {
+                    font-size: 1.1rem; /* Ukuran teks sedikit lebih besar pada tablet */
+                }
+            }
+
+            /* Gaya untuk Foto Kegiatan */
+            .foto-kegiatan {
+                margin-top: 30px;
+                width: 100%;
+                text-align: center;
+                padding: 0 10px; /* Kurangi padding untuk layar kecil */
+                box-sizing: border-box;
+            }
+
+            /* Grid untuk Foto Kegiatan */
+            .foto-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Kolom dinamis */
+                gap: 20px;
+                margin-top: 20px;
+                padding: 0 10px; /* Menyesuaikan padding */
+                box-sizing: border-box;
+            }
+
+            /* Gaya untuk Foto Item */
+            .foto-item img {
+                width: 100%;
+                height: 200px; /* Ukuran gambar tetap, sesuaikan dengan lebar kontainer */
+                object-fit: cover;
+                border-radius: 12px;
+            }
+
+            /* Responsif untuk ukuran layar kecil (ponsel) */
+            @media (max-width: 480px) {
+                .foto-grid {
+                    grid-template-columns: 1fr; /* Satu kolom pada layar kecil */
+                    gap: 15px; /* Kurangi jarak antar item */
+                }
+
+                .foto-item img {
+                    height: auto; /* Biarkan tinggi menyesuaikan */
+                }
+            }
+
+
+
+
+        /* Bagian Geografis */
+        #geografis {
+        padding: 2rem;
+        height: 100vh;
+        background-color: #f4f4f4;
+        text-align: center;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: padding 0.3s ease;
+        }
+
+        #geografis h2 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        color: #0056b3;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Kontainer Map */
+        #map-container {
+        width: 80vw; /* Lebar peta menjadi 80% dari lebar viewport */
+        height: 80vw; /* Tinggi peta juga menjadi 80% dari lebar viewport, memastikan bentuk kotak */
+        margin: 2rem auto; 
+        border: 5px solid #0056b3;
+        border-radius: 10px;
+        background-color: #e6f0ff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+        }
+
+        /* Peta */
+        #map {
+        width: 100%;
+        height: 100%; /* Pastikan peta mengisi seluruh area kontainer */
+        position: absolute;
+        }
+
+        /* Media query untuk tampilan tablet */
+        @media (max-width: 768px) {
+        #map-container {
+        width: 70vw; /* Mengurangi lebar peta pada tablet */
+        height: 70vw; /* Menyesuaikan tinggi peta pada tablet agar tetap kotak */
+        }
+        }
+
+        /* Media query untuk tampilan ponsel */
+        @media (max-width: 480px) {
+        #map-container {
+        width: 85vw; /* Mengurangi lebar peta pada ponsel */
+        height: 85vw; /* Menyesuaikan tinggi peta pada ponsel agar tetap kotak */
+        }
+        }
+
+        /* Tambahan untuk memastikan peta tetap terlihat dan responsif */
+        #geografis {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        }
+
+        /* Kontainer Geografis */
+        .geografis-content {
+        width: 90%;
+        max-width: 1000px;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+        }
+
+        .geografis-content:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Informasi Desa */
+        .desa-info {
+        text-align: justify;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #555;
+        padding: 10px;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        font-family: 'Roboto', sans-serif;
+        transition: background-color 0.3s ease;
+        }
+
+        .desa-info:hover {
+        background-color: #f1f1f1;
+        }
+
+        /* Statistik Desa */
+        .desa-stats {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        gap: 20px;
+        }
+
+        /* Stat Item */
+        .stat-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        background: #e3f2fd;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-icon {
+        font-size: 2rem;
+        color: #ff6f61;
+        margin-bottom: 10px;
+        }
+
+        .stat-item p {
+        font-size: 1.1rem;
+        color: #444;
+        font-weight: 600;
+        }
+
+        /* Responsif untuk ukuran layar kecil (ponsel) */
+        @media (max-width: 768px) {
+        .geografis-content {
+        flex-direction: column;
+        align-items: center;
+        }
+
+        .desa-stats {
+        flex-direction: column;
+        gap: 10px;
+        }
+        }
+
+        /* Responsif untuk ukuran layar ponsel */
+        @media (max-width: 480px) {
+        .stat-item {
+        padding: 10px;
+        }
+
+        #map-container {
+        height: 85vh !important;
+        }
+        }
+
+
+
+
+
+            /* Kontak Section */
+            #kontak {
+                background: linear-gradient(135deg, #0056b3, #00aaff); /* Warna gradien */
+                color: #fff;
+                padding: 3rem 1rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center; /* Menjaga konten tetap di tengah */
+                text-align: center;
+                word-wrap: break-word; /* Memaksa teks panjang terpecah agar tidak melampaui layar */
+                max-width: 100%; /* Pastikan elemen tidak melebihi lebar layar */
+            }
+
+            /* Judul */
+            #kontak h3 {
+                font-size: 2.5rem;
+                margin-bottom: 1.5rem;
+                color: #ffeb3b; /* Warna teks judul */
+                font-weight: 700;
+                text-transform: uppercase;
+                word-wrap: break-word; /* Memastikan judul tidak melebihi layar */
+            }
+
+            /* Info Kontak */
+            .contact-info {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                text-align: center; /* Mengatur teks agar rata tengah */
+                word-wrap: break-word; /* Memaksa teks dalam info kontak terpecah */
+                max-width: 100%; /* Pastikan elemen info kontak tidak melebihi layar */
+            }
+
+            .contact-info li {
+                margin: 0.5rem 0;
+            }
+
+            .contact-info a {
+                text-decoration: none;
+                color: #fff;
+                font-size: 1.2rem;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                word-wrap: break-word; /* Memastikan tautan tidak melebihi layar */
+            }
+
+            .contact-info a:hover {
+                color: #ffeb3b; /* Efek hover */
+            }
+
+            /* Alamat */
+            #kontak p {
+                margin-top: 1rem;
+                font-size: 1.1rem;
+                font-style: italic;
+                text-align: center; /* Memastikan teks alamat rata tengah */
+                word-wrap: break-word; /* Memastikan teks panjang terpecah dan tidak melampaui layar */
+                max-width: 100%; /* Pastikan elemen tidak melebihi lebar layar */
+                padding: 0 1rem; /* Menambahkan padding di kiri dan kanan agar tidak terlalu mepet */
+                box-sizing: border-box; /* Mengatur box-sizing untuk memperhitungkan padding */
+            }
+
+            /* Media Sosial */
+            .social-media {
+                margin-top: 2rem;
+                display: flex;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+
+            .social-icon {
+                font-size: 2.5rem;
+                color: #fff;
+                transition: transform 0.3s ease, color 0.3s ease;
+            }
+
+            .social-icon:hover {
+                color: #ffeb3b; /* Efek hover */
+                transform: scale(1.15); /* Membesarkan sedikit saat di-hover */
+            }
+
+            /* Media Queries untuk Responsif */
+            @media (max-width: 768px) {
+                #kontak {
+                    padding: 2rem 1rem; /* Menyesuaikan padding di layar lebih kecil */
+                }
+
+                #kontak h3 {
+                    font-size: 2rem; /* Mengurangi ukuran font pada layar kecil */
+                }
+
+                .contact-info a {
+                    font-size: 1rem; /* Mengurangi ukuran font pada layar kecil */
+                }
+
+                .social-icon {
+                    font-size: 2rem; /* Mengurangi ukuran ikon pada layar kecil */
+                }
+            }
+
+            @media (max-width: 480px) {
+                #kontak h3 {
+                    font-size: 1.7rem; /* Ukuran lebih kecil lagi di layar sangat kecil */
+                }
+
+                .contact-info a {
+                    font-size: 0.9rem; /* Ukuran font lebih kecil di layar kecil */
+                }
+
+                .social-icon {
+                    font-size: 1.8rem; /* Ukuran ikon lebih kecil */
+                }
+            }
+
+
+
+
+
+
+                    /* Responsif */
+                    @media (max-width: 768px) {
+                    .hero {
+                        padding: 3rem 1rem;
+                    }
+
+                    #geografis {
+                        padding: 2rem 1rem;
+                    }
+
+                    #map-container {
+                        height: auto;
+                        min-height: 200px;
+                    }
+
+                    .cta-button {
+                        padding: 0.5rem 1.2rem;
+                        font-size: 1rem;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    .hero h1 {
+                        font-size: 1.8rem;
+                    }
+
+                    .hero p {
+                        font-size: 1rem;
+                    }
+
+                    .cta-button {
+                        padding: 0.4rem 1rem;
+                    }
+
+                    #map-container {
+                        height: auto;
+                        min-height: 150px;
+                    }
+                }
+
+                body {
+                    overflow-y: auto; /* Mengizinkan scroll secara vertikal */
+                }
+        </style>
+    </head>
+    <body>
+        <!-- Navbar -->
+        <header>
+            <div class="logo">Desa<span class="child-title">Kejawar</span></div>
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <nav class="nav-bar">
+                <ul>
+                    <li><a href="#beranda" class="active">Beranda</a></li>
+                    <li><a href="#visi-misi" class="scroll-to-visi-misi">Visi & Misi</a></li>
+                    <li><a href="#geografis">Geografis</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+            </nav>
+        </header>
+
+
+        <!-- Beranda Section -->
+        <section id="beranda">
+        <div class="hero">
+            <h1>Selamat Datang di Desa Kejawar</h1>
+            <p>
+                Desa Kejawar adalah salah satu desa yang berada di Kecamatan Banyumas, Kabupaten Banyumas, Jawa Tengah. Desa ini memiliki sejarah panjang yang terkait dengan pembentukan Kabupaten Banyumas. Salah satu tokoh penting, Raden Joko Kaiman, yang dikenal sebagai Bupati Banyumas pertama, pernah dibesarkan di desa ini.
+                Desa Kejawar juga dikenal dengan potensi sumber daya alamnya, termasuk lahan sawah, sungai, dan perkebunan. Selain itu, desa ini memiliki berbagai lembaga kemasyarakatan aktif, seperti kelompok tani, arisan, dan posyandu, yang mendukung pembangunan sosial dan ekonomi masyarakatnya
+            </p>
+            <a href="#geografis" class="cta-button">Lihat Peta</a>
+        </div>
+        </section>
+
+        <!-- Visi dan Misi Section -->
+        <section id="visi-misi">
+            <div class="container">
+                <div class="visi-misi-text">
+                    <h2>Visi dan Misi Desa Kejawar</h2>
+                    <div class="visi">
+                        <p>
+                            <strong>Visi :</strong> Kebersamaan dalam membangun demi Desa Kejawar yang lebih maju.
+                        </p>
+                    </div>
+                    <div class="misi">
+                        <p><strong>Misinya</strong> Desa Kejawar:</p>
+                        <ul>
+                            <li>
+                                Bersama masyarakat memperkuat kelembagaan desa untuk pelayanan yang optimal.
+                            </li>
+                            <li>
+                                Menyelenggarakan pemerintahan dan pembangunan desa secara partisipatif.
+                            </li>
+                            <li>
+                                Mewujudkan Desa Kejawar yang aman, tentram, dan damai.
+                            </li>
+                            <li>
+                                Memberdayakan masyarakat untuk meningkatkan kesejahteraan mereka.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+    
+                <!-- Kontainer untuk Foto Kegiatan Desa -->
+                <div class="foto-kegiatan">
+                    <h3>Kegiatan Desa</h3>
+                    <div class="foto-grid">
+                        <div class="foto-item">
+                            <img src="images/kegiatan1.jpg" alt="Kegiatan Desa 1">
+                            <div class="foto-description">
+                                <p>Pelatihan keterampilan untuk masyarakat dalam meningkatkan ekonomi desa.</p>
+                            </div>
+                        </div>
+                        <div class="foto-item">
+                            <img src="images/kegiatan2.jpg" alt="Kegiatan Desa 2">
+                            <div class="foto-description">
+                                <p>Program sanitasi untuk memastikan kebersihan dan kesehatan warga desa.</p>
+                            </div>
+                        </div>
+                        <div class="foto-item">
+                            <img src="images/kegiatan3.jpg" alt="Kegiatan Desa 3">
+                            <div class="foto-description">
+                                <p>Penyuluhan lingkungan hidup untuk menjaga kelestarian alam.</p>
+                            </div>
+                        </div>
+                        <div class="foto-item">
+                            <img src="images/kegiatan4.jpg" alt="Kegiatan Desa 4">
+                            <div class="foto-description">
+                                <p>Pembangunan infrastruktur jalan desa untuk mempermudah akses warga.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </section>
+
+        <!-- Geografis Section -->
+        <section id="geografis">
+            <h2>Lokasi Desa Kejawar</h2>
+            <div id="map-container">
+                <div id="map">
+                    </div>
+                    <script src="js/qgis2web_expressions.js"></script>
+                    <script src="js/leaflet.js"></script>
+                    <script src="js/L.Control.Layers.Tree.min.js"></script>
+                    <script src="js/L.Control.Locate.min.js"></script>
+                    <script src="js/leaflet.rotatedMarker.js"></script>
+                    <script src="js/leaflet.pattern.js"></script>
+                    <script src="js/leaflet-hash.js"></script>
+                    <script src="js/Autolinker.min.js"></script>
+                    <script src="js/rbush.min.js"></script>
+                    <script src="js/labelgun.min.js"></script>
+                    <script src="js/labels.js"></script>
+                    <script src="js/leaflet-search.js"></script>
+                    <script src="data/gadm41_IDN_shpgadm41_IDN_4shp_0.js"></script>
+                    <script src="data/RW_1.js"></script>
+                    <script src="data/RT_2.js"></script>
+                    <script src="data/Clipped_3.js"></script>
+                    <script src="data/Sungai_4.js"></script>
+                    <script src="data/jalan2_5.js"></script>
+                    <script src="data/Clipped_6.js"></script>
+                    <script src="data/Fasum_7.js"></script>
+                    <script>
+                    var map = L.map('map', {
+                        zoomControl:false, maxZoom:28, minZoom:1
+                    }).fitBounds([[-7.548529595937603,109.28797141134484],[-7.522721684253354,109.32602253414436]]);
+                    var hash = new L.Hash(map);
+                    map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+                    var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+                    // remove popup's row if "visible-with-data"
+                    function removeEmptyRowsFromPopupContent(content, feature) {
+                    var tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = content;
+                    var rows = tempDiv.querySelectorAll('tr');
+                    for (var i = 0; i < rows.length; i++) {
+                        var td = rows[i].querySelector('td.visible-with-data');
+                        var key = td ? td.id : '';
+                        if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                            rows[i].parentNode.removeChild(rows[i]);
+                        }
+                    }
+                    return tempDiv.innerHTML;
+                    }
+                    // add class to format popup if it contains media
+                    function addClassToPopupIfMedia(content, popup) {
+                        var tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = content;
+                        if (tempDiv.querySelector('td img')) {
+                            popup._contentNode.classList.add('media');
+                                // Delay to force the redraw
+                                setTimeout(function() {
+                                    popup.update();
+                                }, 10);
+                        } else {
+                            popup._contentNode.classList.remove('media');
+                        }
+                    }
+                    var zoomControl = L.control.zoom({
+                        position: 'topleft'
+                    }).addTo(map);
+                    L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+                    var bounds_group = new L.featureGroup([]);
+                    function setBounds() {
+                    }
+                    function pop_gadm41_IDN_shpgadm41_IDN_4shp_0(feature, layer) {
+                        var popupContent = '<table>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['GID_4'] !== null ? autolinker.link(feature.properties['GID_4'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['GID_0'] !== null ? autolinker.link(feature.properties['GID_0'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['COUNTRY'] !== null ? autolinker.link(feature.properties['COUNTRY'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['GID_1'] !== null ? autolinker.link(feature.properties['GID_1'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['NAME_1'] !== null ? autolinker.link(feature.properties['NAME_1'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['GID_2'] !== null ? autolinker.link(feature.properties['GID_2'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['NAME_2'] !== null ? autolinker.link(feature.properties['NAME_2'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['GID_3'] !== null ? autolinker.link(feature.properties['GID_3'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['NAME_3'] !== null ? autolinker.link(feature.properties['NAME_3'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['NAME_4'] !== null ? autolinker.link(feature.properties['NAME_4'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['VARNAME_4'] !== null ? autolinker.link(feature.properties['VARNAME_4'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['TYPE_4'] !== null ? autolinker.link(feature.properties['TYPE_4'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['ENGTYPE_4'] !== null ? autolinker.link(feature.properties['ENGTYPE_4'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['CC_4'] !== null ? autolinker.link(feature.properties['CC_4'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                            </table>';
+                        var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+                        layer.on('popupopen', function(e) {
+                            addClassToPopupIfMedia(content, e.popup);
+                        });
+                        layer.bindPopup(content, { maxHeight: 400 });
+                    }
+
+                    function style_gadm41_IDN_shpgadm41_IDN_4shp_0_0() {
+                        return {
+                            pane: 'pane_gadm41_IDN_shpgadm41_IDN_4shp_0',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(93,113,183,1.0)',
+                            interactive: true,
+                        }
+                    }
+                    map.createPane('pane_gadm41_IDN_shpgadm41_IDN_4shp_0');
+                    map.getPane('pane_gadm41_IDN_shpgadm41_IDN_4shp_0').style.zIndex = 400;
+                    map.getPane('pane_gadm41_IDN_shpgadm41_IDN_4shp_0').style['mix-blend-mode'] = 'normal';
+                    var layer_gadm41_IDN_shpgadm41_IDN_4shp_0 = new L.geoJson(json_gadm41_IDN_shpgadm41_IDN_4shp_0, {
+                        attribution: '',
+                        interactive: true,
+                        dataVar: 'json_gadm41_IDN_shpgadm41_IDN_4shp_0',
+                        layerName: 'layer_gadm41_IDN_shpgadm41_IDN_4shp_0',
+                        pane: 'pane_gadm41_IDN_shpgadm41_IDN_4shp_0',
+                        onEachFeature: pop_gadm41_IDN_shpgadm41_IDN_4shp_0,
+                        style: style_gadm41_IDN_shpgadm41_IDN_4shp_0_0,
+                    });
+                    bounds_group.addLayer(layer_gadm41_IDN_shpgadm41_IDN_4shp_0);
+                    map.addLayer(layer_gadm41_IDN_shpgadm41_IDN_4shp_0);
+                    function pop_RW_1(feature, layer) {
+                        var popupContent = '<table>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['RW'] !== null ? autolinker.link(feature.properties['RW'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                            </table>';
+                        var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+                        layer.on('popupopen', function(e) {
+                            addClassToPopupIfMedia(content, e.popup);
+                        });
+                        layer.bindPopup(content, { maxHeight: 400 });
+                    }
+
+                    function style_RW_1_0(feature) {
+                        switch(String(feature.properties['id'])) {
+                            case '1':
+                                return {
+                            pane: 'pane_RW_1',
+                            opacity: 1,
+                            color: 'rgba(38,89,128,0.8)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(104,91,216,0.8)',
+                            interactive: true,
+                        }
+                                break;
+                            case '2':
+                                return {
+                            pane: 'pane_RW_1',
+                            opacity: 1,
+                            color: 'rgba(38,89,128,0.8)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(86,203,98,0.8)',
+                            interactive: true,
+                        }
+                                break;
+                            case '3':
+                                return {
+                            pane: 'pane_RW_1',
+                            opacity: 1,
+                            color: 'rgba(38,89,128,0.8)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(218,240,24,0.8)',
+                            interactive: true,
+                        }
+                                break;
+                            case '4':
+                                return {
+                            pane: 'pane_RW_1',
+                            opacity: 1,
+                            color: 'rgba(38,89,128,0.8)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(240,134,228,0.8)',
+                            interactive: true,
+                        }
+                                break;
+                            case '5':
+                                return {
+                            pane: 'pane_RW_1',
+                            opacity: 1,
+                            color: 'rgba(38,89,128,0.8)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(26,193,212,0.8)',
+                            interactive: true,
+                        }
+                                break;
+                            default:
+                                return {
+                            pane: 'pane_RW_1',
+                            opacity: 1,
+                            color: 'rgba(38,89,128,0.8)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(223,112,100,0.8)',
+                            interactive: true,
+                        }
+                                break;
+                        }
+                    }
+                    map.createPane('pane_RW_1');
+                    map.getPane('pane_RW_1').style.zIndex = 401;
+                    map.getPane('pane_RW_1').style['mix-blend-mode'] = 'normal';
+                    var layer_RW_1 = new L.geoJson(json_RW_1, {
+                        attribution: '',
+                        interactive: true,
+                        dataVar: 'json_RW_1',
+                        layerName: 'layer_RW_1',
+                        pane: 'pane_RW_1',
+                        onEachFeature: pop_RW_1,
+                        style: style_RW_1_0,
+                    });
+                    bounds_group.addLayer(layer_RW_1);
+                    map.addLayer(layer_RW_1);
+                    function pop_RT_2(feature, layer) {
+                        var popupContent = '<table>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['nama'] !== null ? autolinker.link(feature.properties['nama'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                            </table>';
+                        var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+                        layer.on('popupopen', function(e) {
+                            addClassToPopupIfMedia(content, e.popup);
+                        });
+                        layer.bindPopup(content, { maxHeight: 400 });
+                    }
+
+                    function style_RT_2_0(feature) {
+                        switch(String(feature.properties['nama'])) {
+                            case 'RT1':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(226,40,77,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT10':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(75,20,204,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT11':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(112,224,84,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT2':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(28,65,215,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT3':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(181,209,115,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT4':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(29,240,92,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT5':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(187,84,213,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT6':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(236,102,49,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT7':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(102,187,223,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT8':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(238,139,208,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT9':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(67,235,201,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            default:
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(200,163,27,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT12':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(86,69,179,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT13':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(251,175,103,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT14':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(68,35,213,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT15':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(248,56,171,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT16':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(107,250,202,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT17':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(145,45,24,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT18':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(61,39,207,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT19':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(85,171,241,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT20':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(15,127,183,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT21':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(249,117,87,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT22':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(178,62,103,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT23':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(108,234,101,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                            case 'RT24':
+                                return {
+                            pane: 'pane_RT_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(131,39,119,1.0)',
+                            interactive: true,
+                        }
+                                break;
+                        }
+                    }
+                    map.createPane('pane_RT_2');
+                    map.getPane('pane_RT_2').style.zIndex = 402;
+                    map.getPane('pane_RT_2').style['mix-blend-mode'] = 'normal';
+                    var layer_RT_2 = new L.geoJson(json_RT_2, {
+                        attribution: '',
+                        interactive: true,
+                        dataVar: 'json_RT_2',
+                        layerName: 'layer_RT_2',
+                        pane: 'pane_RT_2',
+                        onEachFeature: pop_RT_2,
+                        style: style_RT_2_0,
+                    });
+                    bounds_group.addLayer(layer_RT_2);
+                    map.addLayer(layer_RT_2);
+                    function pop_Clipped_3(feature, layer) {
+                        var popupContent = '<table>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['osm_id'] !== null ? autolinker.link(feature.properties['osm_id'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['osm_type'] !== null ? autolinker.link(feature.properties['osm_type'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['health_fac'] !== null ? autolinker.link(feature.properties['health_fac'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['depth'] !== null ? autolinker.link(feature.properties['depth'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['office'] !== null ? autolinker.link(feature.properties['office'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['railway'] !== null ? autolinker.link(feature.properties['railway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['operator_t'] !== null ? autolinker.link(feature.properties['operator_t'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['blockage'] !== null ? autolinker.link(feature.properties['blockage'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['roof_mater'] !== null ? autolinker.link(feature.properties['roof_mater'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['rooms'] !== null ? autolinker.link(feature.properties['rooms'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['tourism'] !== null ? autolinker.link(feature.properties['tourism'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['amenity'] !== null ? autolinker.link(feature.properties['amenity'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['name'] !== null ? autolinker.link(feature.properties['name'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['staff_coun'] !== null ? autolinker.link(feature.properties['staff_coun'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['public_tra'] !== null ? autolinker.link(feature.properties['public_tra'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['width'] !== null ? autolinker.link(feature.properties['width'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['access'] !== null ? autolinker.link(feature.properties['access'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['bridge'] !== null ? autolinker.link(feature.properties['bridge'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['smoothness'] !== null ? autolinker.link(feature.properties['smoothness'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['beds'] !== null ? autolinker.link(feature.properties['beds'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['covered'] !== null ? autolinker.link(feature.properties['covered'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['landuse'] !== null ? autolinker.link(feature.properties['landuse'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['staff_co_1'] !== null ? autolinker.link(feature.properties['staff_co_1'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['diameter'] !== null ? autolinker.link(feature.properties['diameter'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['access_roo'] !== null ? autolinker.link(feature.properties['access_roo'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['building_m'] !== null ? autolinker.link(feature.properties['building_m'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['healthcare'] !== null ? autolinker.link(feature.properties['healthcare'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['opening_ho'] !== null ? autolinker.link(feature.properties['opening_ho'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['government'] !== null ? autolinker.link(feature.properties['government'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['isced_leve'] !== null ? autolinker.link(feature.properties['isced_leve'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['status'] !== null ? autolinker.link(feature.properties['status'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['aeroway'] !== null ? autolinker.link(feature.properties['aeroway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['toilets_di'] !== null ? autolinker.link(feature.properties['toilets_di'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['waterway'] !== null ? autolinker.link(feature.properties['waterway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['parking'] !== null ? autolinker.link(feature.properties['parking'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['tunnel'] !== null ? autolinker.link(feature.properties['tunnel'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['building'] !== null ? autolinker.link(feature.properties['building'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['operator'] !== null ? autolinker.link(feature.properties['operator'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['barrier'] !== null ? autolinker.link(feature.properties['barrier'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['capacity'] !== null ? autolinker.link(feature.properties['capacity'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['man_made'] !== null ? autolinker.link(feature.properties['man_made'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['health_f_1'] !== null ? autolinker.link(feature.properties['health_f_1'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['water'] !== null ? autolinker.link(feature.properties['water'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['highway'] !== null ? autolinker.link(feature.properties['highway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['surface'] !== null ? autolinker.link(feature.properties['surface'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['pump'] !== null ? autolinker.link(feature.properties['pump'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['natural'] !== null ? autolinker.link(feature.properties['natural'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['oneway'] !== null ? autolinker.link(feature.properties['oneway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['addr_stree'] !== null ? autolinker.link(feature.properties['addr_stree'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['toilets_ha'] !== null ? autolinker.link(feature.properties['toilets_ha'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['health_f_2'] !== null ? autolinker.link(feature.properties['health_f_2'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['layer'] !== null ? autolinker.link(feature.properties['layer'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['military'] !== null ? autolinker.link(feature.properties['military'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['shop'] !== null ? autolinker.link(feature.properties['shop'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['medical_sy'] !== null ? autolinker.link(feature.properties['medical_sy'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['addr_house'] !== null ? autolinker.link(feature.properties['addr_house'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                            </table>';
+                        var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+                        layer.on('popupopen', function(e) {
+                            addClassToPopupIfMedia(content, e.popup);
+                        });
+                        layer.bindPopup(content, { maxHeight: 400 });
+                    }
+
+                    function style_Clipped_3_0() {
+                        return {
+                            pane: 'pane_Clipped_3',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0, 
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(125,139,143,1.0)',
+                            interactive: true,
+                        }
+                    }
+                    map.createPane('pane_Clipped_3');
+                    map.getPane('pane_Clipped_3').style.zIndex = 403;
+                    map.getPane('pane_Clipped_3').style['mix-blend-mode'] = 'normal';
+                    var layer_Clipped_3 = new L.geoJson(json_Clipped_3, {
+                        attribution: '',
+                        interactive: true,
+                        dataVar: 'json_Clipped_3',
+                        layerName: 'layer_Clipped_3',
+                        pane: 'pane_Clipped_3',
+                        onEachFeature: pop_Clipped_3,
+                        style: style_Clipped_3_0,
+                    });
+                    bounds_group.addLayer(layer_Clipped_3);
+                    map.addLayer(layer_Clipped_3);
+                    function pop_Sungai_4(feature, layer) {
+                        var popupContent = '<table>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['Sungai'] !== null ? autolinker.link(feature.properties['Sungai'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                            </table>';
+                        var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+                        layer.on('popupopen', function(e) {
+                            addClassToPopupIfMedia(content, e.popup);
+                        });
+                        layer.bindPopup(content, { maxHeight: 400 });
+                    }
+
+                    function style_Sungai_4_0() {
+                        return {
+                            pane: 'pane_Sungai_4',
+                            opacity: 1,
+                            color: 'rgba(23,185,255,1.0)',
+                            dashArray: '',
+                            lineCap: 'square',
+                            lineJoin: 'bevel',
+                            weight: 5.0,
+                            fillOpacity: 0,
+                            interactive: true,
+                        }
+                    }
+                    map.createPane('pane_Sungai_4');
+                    map.getPane('pane_Sungai_4').style.zIndex = 404;
+                    map.getPane('pane_Sungai_4').style['mix-blend-mode'] = 'normal';
+                    var layer_Sungai_4 = new L.geoJson(json_Sungai_4, {
+                        attribution: '',
+                        interactive: true,
+                        dataVar: 'json_Sungai_4',
+                        layerName: 'layer_Sungai_4',
+                        pane: 'pane_Sungai_4',
+                        onEachFeature: pop_Sungai_4,
+                        style: style_Sungai_4_0,
+                    });
+                    bounds_group.addLayer(layer_Sungai_4);
+                    map.addLayer(layer_Sungai_4);
+                    function pop_jalan2_5(feature, layer) {
+                        var popupContent = '<table>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['Nama'] !== null ? autolinker.link(feature.properties['Nama'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                            </table>';
+                        var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+                        layer.on('popupopen', function(e) {
+                            addClassToPopupIfMedia(content, e.popup);
+                        });
+                        layer.bindPopup(content, { maxHeight: 400 });
+                    }
+
+                    function style_jalan2_5_0() {
+                        return {
+                            pane: 'pane_jalan2_5',
+                            opacity: 1,
+                            color: 'rgba(247,252,245,1.0)',
+                            dashArray: '',
+                            lineCap: 'square',
+                            lineJoin: 'bevel',
+                            weight: 4.0,
+                            fillOpacity: 0,
+                            interactive: true,
+                        }
+                    }
+                    map.createPane('pane_jalan2_5');
+                    map.getPane('pane_jalan2_5').style.zIndex = 405;
+                    map.getPane('pane_jalan2_5').style['mix-blend-mode'] = 'normal';
+                    var layer_jalan2_5 = new L.geoJson(json_jalan2_5, {
+                        attribution: '',
+                        interactive: true,
+                        dataVar: 'json_jalan2_5',
+                        layerName: 'layer_jalan2_5',
+                        pane: 'pane_jalan2_5',
+                        onEachFeature: pop_jalan2_5,
+                        style: style_jalan2_5_0,
+                    });
+                    bounds_group.addLayer(layer_jalan2_5);
+                    map.addLayer(layer_jalan2_5);
+                    function pop_Clipped_6(feature, layer) {
+                        var popupContent = '<table>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['osm_id'] !== null ? autolinker.link(feature.properties['osm_id'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['osm_type'] !== null ? autolinker.link(feature.properties['osm_type'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['depth'] !== null ? autolinker.link(feature.properties['depth'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['railway'] !== null ? autolinker.link(feature.properties['railway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['blockage'] !== null ? autolinker.link(feature.properties['blockage'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['amenity'] !== null ? autolinker.link(feature.properties['amenity'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['name'] !== null ? autolinker.link(feature.properties['name'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['width'] !== null ? autolinker.link(feature.properties['width'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['public_tra'] !== null ? autolinker.link(feature.properties['public_tra'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['bridge'] !== null ? autolinker.link(feature.properties['bridge'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['smoothness'] !== null ? autolinker.link(feature.properties['smoothness'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['landuse'] !== null ? autolinker.link(feature.properties['landuse'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['covered'] !== null ? autolinker.link(feature.properties['covered'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['diameter'] !== null ? autolinker.link(feature.properties['diameter'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['aeroway'] !== null ? autolinker.link(feature.properties['aeroway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['waterway'] !== null ? autolinker.link(feature.properties['waterway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['parking'] !== null ? autolinker.link(feature.properties['parking'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['tunnel'] !== null ? autolinker.link(feature.properties['tunnel'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['building'] !== null ? autolinker.link(feature.properties['building'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['operator'] !== null ? autolinker.link(feature.properties['operator'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['barrier'] !== null ? autolinker.link(feature.properties['barrier'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['capacity'] !== null ? autolinker.link(feature.properties['capacity'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['man_made'] !== null ? autolinker.link(feature.properties['man_made'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['water'] !== null ? autolinker.link(feature.properties['water'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['highway'] !== null ? autolinker.link(feature.properties['highway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['surface'] !== null ? autolinker.link(feature.properties['surface'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['pump'] !== null ? autolinker.link(feature.properties['pump'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['oneway'] !== null ? autolinker.link(feature.properties['oneway'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['layer'] !== null ? autolinker.link(feature.properties['layer'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['natural'] !== null ? autolinker.link(feature.properties['natural'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                            </table>';
+                        var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+                        layer.on('popupopen', function(e) {
+                            addClassToPopupIfMedia(content, e.popup);
+                        });
+                        layer.bindPopup(content, { maxHeight: 400 });
+                    }
+
+                    function style_Clipped_6_0() {
+                        return {
+                            pane: 'pane_Clipped_6',
+                            opacity: 1,
+                            color: 'rgba(247,247,247,1.0)',
+                            dashArray: '',
+                            lineCap: 'square',
+                            lineJoin: 'bevel',
+                            weight: 3.0,
+                            fillOpacity: 0,
+                            interactive: true,
+                        }
+                    }
+                    map.createPane('pane_Clipped_6');
+                    map.getPane('pane_Clipped_6').style.zIndex = 406;
+                    map.getPane('pane_Clipped_6').style['mix-blend-mode'] = 'normal';
+                    var layer_Clipped_6 = new L.geoJson(json_Clipped_6, {
+                        attribution: '',
+                        interactive: true,
+                        dataVar: 'json_Clipped_6',
+                        layerName: 'layer_Clipped_6',
+                        pane: 'pane_Clipped_6',
+                        onEachFeature: pop_Clipped_6,
+                        style: style_Clipped_6_0,
+                    });
+                    bounds_group.addLayer(layer_Clipped_6);
+                    map.addLayer(layer_Clipped_6);
+                    function pop_Fasum_7(feature, layer) {
+                        var popupContent = '<table>\
+                                <tr>\
+                                    <td colspan="2">' + (feature.properties['Nama'] !== null ? autolinker.link(feature.properties['Nama'].toLocaleString()) : '') + '</td>\
+                                </tr>\
+                            </table>';
+                        var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+                        layer.on('popupopen', function(e) {
+                            addClassToPopupIfMedia(content, e.popup);
+                        });
+                        layer.bindPopup(content, { maxHeight: 400 });
+                    }
+
+                    function style_Fasum_7_0() {
+                        return {
+                            pane: 'pane_Fasum_7',
+                            radius: 4.0,
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(231,113,72,1.0)',
+                            interactive: true,
+                        }
+                    }
+                    map.createPane('pane_Fasum_7');
+                    map.getPane('pane_Fasum_7').style.zIndex = 407;
+                    map.getPane('pane_Fasum_7').style['mix-blend-mode'] = 'normal';
+                    var layer_Fasum_7 = new L.geoJson(json_Fasum_7, {
+                        attribution: '',
+                        interactive: true,
+                        dataVar: 'json_Fasum_7',
+                        layerName: 'layer_Fasum_7',
+                        pane: 'pane_Fasum_7',
+                        onEachFeature: pop_Fasum_7,
+                        pointToLayer: function (feature, latlng) {
+                            var context = {
+                                feature: feature,
+                                variables: {}
+                            };
+                            return L.circleMarker(latlng, style_Fasum_7_0(feature));
+                        },
+                    });
+                    bounds_group.addLayer(layer_Fasum_7);
+                    map.addLayer(layer_Fasum_7);
+                    var baseMaps = {};
+                    var overlaysTree = [
+                        {label: '<img src="legend/Fasum_7.png" /> Fasum', layer: layer_Fasum_7},
+                        {label: '<img src="legend/Clipped_6.png" /> Clipped', layer: layer_Clipped_6},
+                        {label: '<img src="legend/jalan2_5.png" /> jalan2', layer: layer_jalan2_5},
+                        {label: '<img src="legend/Sungai_4.png" /> Sungai', layer: layer_Sungai_4},
+                        {label: '<img src="legend/Clipped_3.png" /> Clipped', layer: layer_Clipped_3},
+                        {label: 'RT<br /><table><tr><td style="text-align: center;"><img src="legend/RT_2_RT10.png" /></td><td>RT1</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT101.png" /></td><td>RT10</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT112.png" /></td><td>RT11</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT23.png" /></td><td>RT2</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT34.png" /></td><td>RT3</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT45.png" /></td><td>RT4</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT56.png" /></td><td>RT5</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT67.png" /></td><td>RT6</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT78.png" /></td><td>RT7</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT89.png" /></td><td>RT8</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT910.png" /></td><td>RT9</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_11.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT1212.png" /></td><td>RT12</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT1313.png" /></td><td>RT13</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT1414.png" /></td><td>RT14</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT1515.png" /></td><td>RT15</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT1616.png" /></td><td>RT16</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT1717.png" /></td><td>RT17</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT1818.png" /></td><td>RT18</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT1919.png" /></td><td>RT19</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT2020.png" /></td><td>RT20</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT2121.png" /></td><td>RT21</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT2222.png" /></td><td>RT22</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT2323.png" /></td><td>RT23</td></tr><tr><td style="text-align: center;"><img src="legend/RT_2_RT2424.png" /></td><td>RT24</td></tr></table>', layer: layer_RT_2},
+                        {label: 'RW<br /><table><tr><td style="text-align: center;"><img src="legend/RW_1_10.png" /></td><td>1</td></tr><tr><td style="text-align: center;"><img src="legend/RW_1_21.png" /></td><td>2</td></tr><tr><td style="text-align: center;"><img src="legend/RW_1_32.png" /></td><td>3</td></tr><tr><td style="text-align: center;"><img src="legend/RW_1_43.png" /></td><td>4</td></tr><tr><td style="text-align: center;"><img src="legend/RW_1_54.png" /></td><td>5</td></tr><tr><td style="text-align: center;"><img src="legend/RW_1_5.png" /></td><td></td></tr></table>', layer: layer_RW_1},
+                        {label: '<img src="legend/gadm41_IDN_shpgadm41_IDN_4shp_0.png" /> gadm41_IDN_shp — gadm41_IDN_4.shp', layer: layer_gadm41_IDN_shpgadm41_IDN_4shp_0},]
+                    var lay = L.control.layers.tree(null, overlaysTree,{
+                        //namedToggle: true,
+                        //selectorBack: false,
+                        //closedSymbol: '&#8862; &#x1f5c0;',
+                        //openedSymbol: '&#8863; &#x1f5c1;',
+                        //collapseAll: 'Collapse all',
+                        //expandAll: 'Expand all',
+                        collapsed: false, 
+                    });
+                    lay.addTo(map);
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // set new Layers List height which considers toggle icon
+                        function newLayersListHeight() {
+                            var layerScrollbarElement = document.querySelector('.leaflet-control-layers-scrollbar');
+                            if (layerScrollbarElement) {
+                                var layersListElement = document.querySelector('.leaflet-control-layers-list');
+                                var originalHeight = layersListElement.style.height 
+                                    || window.getComputedStyle(layersListElement).height;
+                                var newHeight = parseFloat(originalHeight) - 50;
+                                layersListElement.style.height = newHeight + 'px';
+                            }
+                        }
+                        var isLayersListExpanded = true;
+                        var controlLayersElement = document.querySelector('.leaflet-control-layers');
+                        var toggleLayerControl = document.querySelector('.leaflet-control-layers-toggle');
+                        // toggle Collapsed/Expanded and apply new Layers List height
+                        toggleLayerControl.addEventListener('click', function() {
+                            if (isLayersListExpanded) {
+                                controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                            } else {
+                                controlLayersElement.classList.add('leaflet-control-layers-expanded');
+                            }
+                            isLayersListExpanded = !isLayersListExpanded;
+                            newLayersListHeight()
+                        });	
+                        // apply new Layers List height if toggle layerstree
+                        if (controlLayersElement) {
+                            controlLayersElement.addEventListener('click', function(event) {
+                                var toggleLayerHeaderPointer = event.target.closest('.leaflet-layerstree-header-pointer span');
+                                if (toggleLayerHeaderPointer) {
+                                    newLayersListHeight();
+                                }
+                            });
+                        }
+                        // Collapsed/Expanded at Start to apply new height
+                        setTimeout(function() {
+                            toggleLayerControl.click();
+                        }, 10);
+                        setTimeout(function() {
+                            toggleLayerControl.click();
+                        }, 10);
+                        // Collapsed touch/small screen
+                        var isSmallScreen = window.innerWidth < 650;
+                        if (isSmallScreen) {
+                            setTimeout(function() {
+                                controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                                isLayersListExpanded = !isLayersListExpanded;
+                            }, 500);
+                        }  
+                    });       
+                    setBounds();
+                    var i = 0;
+                    layer_RW_1.eachLayer(function(layer) {
+                        var context = {
+                            feature: layer.feature,
+                            variables: {}
+                        };
+                        layer.bindTooltip((layer.feature.properties['RW'] !== null?String('<div style="color: #000000; font-size: 10pt; font-weight: bold; font-family: \'Segoe UI Black\', sans-serif;">' + layer.feature.properties['RW']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_RW_1'});
+                        labels.push(layer);
+                        totalMarkers += 1;
+                        layer.added = true;
+                        addLabel(layer, i);
+                        i++;
+                    });
+                    var i = 0;
+                    layer_RT_2.eachLayer(function(layer) {
+                        var context = {
+                            feature: layer.feature,
+                            variables: {}
+                        };
+                        layer.bindTooltip((layer.feature.properties['nama'] !== null?String('<div style="color: #323232; font-size: 10pt; font-weight: bold; font-family: \'Segoe UI Black\', sans-serif;">' + layer.feature.properties['nama']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_RT_2'});
+                        labels.push(layer);
+                        totalMarkers += 1;
+                        layer.added = true;
+                        addLabel(layer, i);
+                        i++;
+                    });
+                    var i = 0;
+                    layer_jalan2_5.eachLayer(function(layer) {
+                        var context = {
+                            feature: layer.feature,
+                            variables: {}
+                        };
+                        layer.bindTooltip((layer.feature.properties['Nama'] !== null?String('<div style="color: #f7fcf5; font-size: 17pt; font-family: \'Mongolian Baiti\', sans-serif;">' + layer.feature.properties['Nama']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_jalan2_5'});
+                        labels.push(layer);
+                        totalMarkers += 1;
+                        layer.added = true;
+                        addLabel(layer, i);
+                        i++;
+                    });
+                    var i = 0;
+                    layer_Fasum_7.eachLayer(function(layer) {
+                        var context = {
+                            feature: layer.feature,
+                            variables: {}
+                        };
+                        layer.bindTooltip((layer.feature.properties['Nama'] !== null?String('<div style="color: #323232; font-size: 7pt; font-weight: bold; font-family: \'Segoe UI Black\', sans-serif;">' + layer.feature.properties['Nama']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Fasum_7'});
+                        labels.push(layer);
+                        totalMarkers += 1;
+                        layer.added = true;
+                        addLabel(layer, i);
+                        i++;
+                    });
+                    map.addControl(new L.Control.Search({
+                        layer: layer_Fasum_7,
+                        initial: false,
+                        hideMarkerOnCollapse: true,
+                        propertyName: 'Nama'}));
+                    document.getElementsByClassName('search-button')[0].className +=
+                    ' fa fa-binoculars';
+                    resetLabels([layer_RW_1,layer_RT_2,layer_jalan2_5,layer_Fasum_7]);
+                    map.on("zoomend", function(){
+                        resetLabels([layer_RW_1,layer_RT_2,layer_jalan2_5,layer_Fasum_7]);
+                    });
+                    map.on("layeradd", function(){
+                        resetLabels([layer_RW_1,layer_RT_2,layer_jalan2_5,layer_Fasum_7]);
+                    });
+                    map.on("layerremove", function(){
+                        resetLabels([layer_RW_1,layer_RT_2,layer_jalan2_5,layer_Fasum_7]);
+                    });
+                    </script>
+                    </div>
+                    <div class="geografis-content">
+                        <div class="desa-info">
+                            <p><strong>Desa Kejawar</strong> terletak di Kecamatan Banyumas, Kabupaten Banyumas, Jawa Tengah. Desa ini memiliki luas <strong>10 km<sup>2</sup></strong> dan dihuni lebih dari <strong>10.000 penduduk</strong>. Dikelilingi oleh pegunungan dan persawahan, serta memiliki akses jalan yang menghubungkan wilayah sekitarnya.</p>
+                        </div>
+                        <div class="desa-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">🏞️</span>
+                                <p>4 Pedukuhan/Dusun</p>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">🏘️</span>
+                                <p>5 Rukun Warga (RW)</p>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">🏡</span>
+                                <p>24 Rukun Tetangga (RT)</p>
+                            </div>
+                        </div>
+                    </div>
+        </section>
+
+    <!-- Kontak Section -->
+    <footer id="kontak">
+        <h3>Kontak Kami</h3>
+        <ul class="contact-info">
+            <li><a href="mailto:info@desseliling.id">Email: kejawar@gmail.com</a></li>
+            <li><a href="tel:+628123456789">Telepon: +62 812 3456 789</a></li>
+        </ul>
+        <p>Alamat: Jl.Balaidesa No.14,Kejawar,Kec.Banyumas,Kab.Banyumas,Prov.Jawa Tengah
+            Kode Pos : 53192
+        </p>
+        
+        <!-- Media Sosial -->
+        <div class="social-media">
+            <a href="https://www.instagram.com/desseliling" target="_blank" class="social-icon">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://twitter.com/desseliling" target="_blank" class="social-icon">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const hamburger = document.querySelector(".hamburger");
+                const navBar = document.querySelector(".nav-bar");
+                const lines = document.querySelectorAll(".hamburger .line");
+                const scrollLink = document.querySelector('.scroll-to-visi-misi');
+    
+                // Toggle the active class to show/hide the nav menu
+                hamburger.addEventListener("click", () => {
+                    navBar.classList.toggle("active");
+    
+                    // Toggle the 'change' class on each line to animate the hamburger icon
+                    lines.forEach(line => line.classList.toggle("change"));
+                });
+            });
+    </script>
+
+    </body>
+</html>
